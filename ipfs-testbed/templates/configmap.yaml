@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 data:
-  proxy-config.json: {{ .Values.toxiproxy.config }}
+  proxy-config.json: | {{ toJson .Values.toxiproxy.config | nindent 4 }}
 
 ---
 
@@ -24,4 +24,4 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 data:
-  ipfs-config.json: {{ .Values.ipfs.config }}
+  ipfs-config.json: | {{ toJson .Values.ipfs.config  | nindent 4 }}

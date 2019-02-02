@@ -70,11 +70,11 @@ spec:
           env:
             {{- toYaml .Values.ipfs.env | nindent 12 }}
           resources:
-            {{- toYaml .Values.ipfs.resources | nindent 12 }}
+           {{- toYaml .Values.ipfs.resources | nindent 12 }}
       volumes:
         - name: toxiproxy-config
           configMap:
-            name: toxiproxy-config
+            name: {{ include "ipfs-testbed.fullname" . }}-toxiproxy-config
             defaultMode: 0444
     {{- with .Values.nodeSelector }}
       nodeSelector:

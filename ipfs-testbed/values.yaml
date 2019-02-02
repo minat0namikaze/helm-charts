@@ -5,25 +5,22 @@
 toxiproxy:
   image:
     repository: shopify/toxiproxy
-    tag: stable
+    tag: latest
     pullPolicy: IfNotPresent
-  config: |
-    [
-      {
-        "name": "ipfs_swarm",
-        "listen": "0.0.0.0:8002",
-        "upstream": "0.0.0.0:4002"
-      }
-    ]
+  config:
+    - name: "ipfs_swarm"
+      listen: "0.0.0.0:8002"
+      upstream: "0.0.0.0:4002"
 
 ipfs:
   image:
     repository: ipfs/js-ipfs
-    tag: stable
+    tag: latest
     pullPolicy: IfNotPresent
   env:
     - name: DEBUG
       value: "libp2p*,jsipfs*"
+  config: {}
 
 nameOverride: ""
 fullnameOverride: ""
@@ -36,31 +33,6 @@ service:
     port: 8474
   ipfsAPI:
     port: 5002
-
-ingress:
-  enabled: false
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  paths: []
-  hosts:
-    - chart-example.local
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
-
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #  cpu: 100m
-  #  memory: 128Mi
-  # requests:
-  #  cpu: 100m
-  #  memory: 128Mi
 
 nodeSelector: {}
 

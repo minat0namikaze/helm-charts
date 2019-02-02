@@ -22,7 +22,7 @@ spec:
       protocol: TCP
       port: {{ .Values.service.toxiproxyAPI.port }}
       targetPort: 8474
-    - name: toxiproxy-api
+    - name: ipfs-api
       protocol: TCP
       port: {{ .Values.service.ipfsAPI.port }}
       targetPort: ipfs-api

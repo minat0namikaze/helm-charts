@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "ipfs-testbed.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "ipfs-testbed.name" . }}
+    helm.sh/chart: {{ include "ipfs-testbed.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "ipfs-testbed.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "ipfs-testbed.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: toxiproxy
+          image: "{{ .Values.toxiproxy.image.repository }}:{{ .Values.toxiproxy.image.tag }}"
+          imagePullPolicy: {{ .Values.toxiproxy.image.pullPolicy }}
+          args: ["--host", "0.0.0.0", "--config", "/etc/toxiproxy-config/proxy-config.json"]
+          ports:
+            - name: toxiproxy-api
+              containerPort: 8474
+            - name: toxiproxy-proxy
+              containerPort: 8002
+          readinessProbe:
+            tcpSocket:
+              port: toxiproxy-proxy
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: toxiproxy-proxy
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          env:
+            {{- toYaml .Values.toxiproxy.env | nindent 12 }}
+          resources:
+            {{- toYaml .Values.toxiproxy.resources | nindent 12 }}
+          volumeMounts:
+            - name: toxiproxy-config
+              mountPath: /etc/toxiproxy-config
+              readOnly: true
+        - name: js-ipfs
+          image: "{{ .Values.ipfs.image.repository }}:{{ .Values.ipfs.image.tag }}"
+          ports:
+            - name: ipfs-swarm
+              containerPort: 4002
+            - name: ipfs-api
+              containerPort: 5002
+          readinessProbe:
+            httpGet:
+              path: /api/v0/id
+              port: ipfs-api
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/v0/id
+              port: ipfs-api
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          env:
+            {{- toYaml .Values.ipfs.env | nindent 12 }}
+          resources:
+            {{- toYaml .Values.ipfs.resources | nindent 12 }}
+      volumes:
+        - name: toxiproxy-config
+          configMap:
+            name: toxiproxy-config
+            defaultMode: 0444
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

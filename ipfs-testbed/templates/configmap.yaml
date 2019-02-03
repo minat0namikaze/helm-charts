@@ -24,4 +24,4 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 data:
-  ipfs-config.json: | {{ toJson .Values.ipfs.config  | nindent 4 }}
+  config: | {{ toJson .Values.ipfs.config  | nindent 4 }}

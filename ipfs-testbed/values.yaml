@@ -20,7 +20,13 @@ ipfs:
   env:
     - name: DEBUG
       value: "libp2p*,jsipfs*"
-  config: {}
+  config:
+    Discovery:
+      MDNS:
+        Enabled: false
+      webRTCStar:
+        Enabled: true
+    Bootstrap: []
 
 nameOverride: ""
 fullnameOverride: ""

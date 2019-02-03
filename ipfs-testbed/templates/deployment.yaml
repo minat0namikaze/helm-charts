@@ -68,9 +68,14 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 10
           env:
+            - name: IPFS_CONFIG
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "ipfs-testbed.fullname" . }}-ipfs-config
+                  key: config
             {{- toYaml .Values.ipfs.env | nindent 12 }}
           resources:
-           {{- toYaml .Values.ipfs.resources | nindent 12 }}
+            {{- toYaml .Values.ipfs.resources | nindent 12 }}
       volumes:
         - name: toxiproxy-config
           configMap:

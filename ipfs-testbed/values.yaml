@@ -14,7 +14,7 @@ toxiproxy:
 
 ipfs:
   image:
-    repository: ipfs/js-ipfs
+    repository: registry.gitlab.com/jgantunes/js-ipfs
     tag: latest
     pullPolicy: IfNotPresent
   env:

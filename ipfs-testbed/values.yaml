@@ -7,6 +7,12 @@ toxiproxy:
     repository: shopify/toxiproxy
     tag: latest
     pullPolicy: IfNotPresent
+  readinessProbe:
+    initialDelaySeconds: 20
+    periodSeconds: 20
+  livenessProbe:
+    initialDelaySeconds: 20
+    periodSeconds: 20
   config:
     - name: "ipfs_swarm"
       listen: "0.0.0.0:8002"
@@ -20,6 +26,12 @@ ipfs:
   env:
     - name: DEBUG
       value: "libp2p*,jsipfs*"
+  readinessProbe:
+    initialDelaySeconds: 20
+    periodSeconds: 20
+  livenessProbe:
+    initialDelaySeconds: 20
+    periodSeconds: 20
   config:
     Discovery:
       MDNS:

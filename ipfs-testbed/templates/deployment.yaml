@@ -35,11 +35,13 @@ spec:
               port: toxiproxy-proxy
             initialDelaySeconds: {{ .Values.toxiproxy.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.toxiproxy.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.toxiproxy.readinessProbe.timeoutSeconds }}
           livenessProbe:
             tcpSocket:
               port: toxiproxy-proxy
             initialDelaySeconds: {{ .Values.toxiproxy.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.toxiproxy.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.toxiproxy.livenessProbe.timeoutSeconds }}
           env:
             {{- toYaml .Values.toxiproxy.env | nindent 12 }}
           resources:
@@ -61,12 +63,14 @@ spec:
               port: ipfs-api
             initialDelaySeconds: {{ .Values.ipfs.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.ipfs.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.ipfs.readinessProbe.timeoutSeconds }}
           livenessProbe:
             httpGet:
               path: /api/v0/id
               port: ipfs-api
             initialDelaySeconds: {{ .Values.ipfs.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.ipfs.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.ipfs.livenessProbe.timeoutSeconds }}
           env:
             - name: IPFS_CONFIG
               valueFrom:

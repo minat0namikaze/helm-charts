@@ -10,9 +10,11 @@ toxiproxy:
   readinessProbe:
     initialDelaySeconds: 20
     periodSeconds: 20
+    timeoutSeconds: 1
   livenessProbe:
     initialDelaySeconds: 20
     periodSeconds: 20
+    timeoutSeconds: 1
   config:
     - name: "ipfs_swarm"
       listen: "0.0.0.0:8002"
@@ -29,9 +31,11 @@ ipfs:
   readinessProbe:
     initialDelaySeconds: 20
     periodSeconds: 20
+    timeoutSeconds: 3
   livenessProbe:
     initialDelaySeconds: 20
     periodSeconds: 20
+    timeoutSeconds: 3
   config:
     Discovery:
       MDNS:

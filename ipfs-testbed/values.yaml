@@ -56,6 +56,12 @@ service:
   ipfsAPI:
     port: 5002
 
+ingress:
+  enabled: false
+  class: addon-http-application-routing
+  host: example.com
+  annotations: {}
+
 nodeSelector: {}
 
 tolerations: []

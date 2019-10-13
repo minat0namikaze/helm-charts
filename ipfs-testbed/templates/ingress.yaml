@@ -1,0 +1,33 @@
+{{if .Values.ingress.enabled}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ include "ipfs-testbed.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "ipfs-testbed.name" . }}
+    helm.sh/chart: {{ include "ipfs-testbed.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+  annotations:
+  {{- range $key, $value := .Values.ingress.annotations }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end}}
+    kubernetes.io/ingress.class: {{ .Values.ingress.class | quote }}
+spec:
+  rules:
+  - host: {{ include "ipfs-testbed.fullname" . }}-ipfs.{{ .Values.ingress.host }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ include "ipfs-testbed.fullname" . }}
+          servicePort: "ipfs-api"
+  - host: {{ include "ipfs-testbed.fullname" . }}-toxiproxy.{{ .Values.ingress.host }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ include "ipfs-testbed.fullname" . }}
+          servicePort: "toxiproxy-api"
+{{end}}

@@ -8,11 +8,11 @@ toxiproxy:
     tag: latest
     pullPolicy: IfNotPresent
   readinessProbe:
-    initialDelaySeconds: 20
+    initialDelaySeconds: 60
     periodSeconds: 20
     timeoutSeconds: 1
   livenessProbe:
-    initialDelaySeconds: 20
+    initialDelaySeconds: 60
     periodSeconds: 20
     timeoutSeconds: 1
   config:
